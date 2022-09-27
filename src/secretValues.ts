@@ -53,7 +53,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
       const issueEdition = context.issue({ body: getUpdatedText(body, sensitiveValues) });
       await context.octokit.issues.update(issueEdition);
 
-      const issueComment = context.issue({ body: getComment(sensitiveValues, context.payload.sender) });
+      const issueComment = context.issue({ body: getComment(sensitiveValues, context.payload.issue.user) });
       await context.octokit.issues.createComment(issueComment);
     }
   });
@@ -67,7 +67,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
       const commentEdition = context.issue({ comment_id: context.payload.comment.id, body: getUpdatedText(body, sensitiveValues) });
       await context.octokit.issues.updateComment(commentEdition);
 
-      const issueComment = context.issue({ body: getComment(sensitiveValues, context.payload.sender) });
+      const issueComment = context.issue({ body: getComment(sensitiveValues, context.payload.comment.user) });
       await context.octokit.issues.createComment(issueComment);
     }
   });
@@ -100,7 +100,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
           }
         `,
         discussionId: context.payload.discussion.node_id,
-        body: getComment(sensitiveValues, context.payload.sender),
+        body: getComment(sensitiveValues, context.payload.discussion.user),
       });
     }
   });
@@ -134,7 +134,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
         `,
         discussionId: context.payload.discussion.node_id,
         replyToId: context.payload.comment.node_id,
-        body: getComment(sensitiveValues, context.payload.sender),
+        body: getComment(sensitiveValues, context.payload.comment.user),
       });
     }
   });
