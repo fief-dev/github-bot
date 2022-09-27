@@ -1,7 +1,7 @@
 import { Probot } from 'probot';
 import type { User } from "@octokit/webhooks-types";
 
-const SECRET_VALUES_REGEX = new RegExp(/(SECRET|ENCRYPTION_KEY|FIEF_CLIENT_ID|FIEF_CLIENT_SECRET)\s*=\s*(\w+)/, 'img');
+const SECRET_VALUES_REGEX = new RegExp(/(SECRET|ENCRYPTION_KEY|FIEF_CLIENT_ID|FIEF_CLIENT_SECRET)\s*=\s*([\w\-]+)/, 'img');
 
 type SensitiveValues = { name: string, value: string, full_match: string }[];
 
