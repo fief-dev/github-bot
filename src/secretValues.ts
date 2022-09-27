@@ -32,7 +32,7 @@ const getUpdatedText = (text: string, sensitiveValues: SensitiveValues): string 
 
 const getComment = (sensitiveValues: SensitiveValues, sender: User): string => {
   return `
-Hello, @${sender.login} 👋
+Hail, @${sender.login} 👋
 
 I've noticed you shared secret values: ${sensitiveValues.map(({ name }) => `\`${name}\``).join(', ')}. Those are highly sensitive and you should keep them secret.
 
