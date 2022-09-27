@@ -41,7 +41,7 @@ For your security, I've taken the liberty to replace them with dummy values.
 };
 
 export const secretValuesHandler = (app: Probot): Probot => {
-  app.on(["issues.opened"], async (context) => {
+  app.on(["issues.opened", "issues.edited"], async (context) => {
     if (context.isBot) return;
 
     const body = context.payload.issue.body;
@@ -58,7 +58,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
     }
   });
 
-  app.on(["issue_comment.created"], async (context) => {
+  app.on(["issue_comment.created", "issue_comment.edited"], async (context) => {
     if (context.isBot) return;
 
     const body = context.payload.comment.body;
@@ -72,7 +72,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
     }
   });
 
-  app.on(["discussion.created"], async (context) => {
+  app.on(["discussion.created", "discussion.edited"], async (context) => {
     if (context.isBot) return;
 
     const body = context.payload.discussion.body;
@@ -105,7 +105,7 @@ export const secretValuesHandler = (app: Probot): Probot => {
     }
   });
 
-  app.on(["discussion_comment.created"], async (context) => {
+  app.on(["discussion_comment.created", "discussion_comment.edited"], async (context) => {
     if (context.isBot) return;
 
     const body = context.payload.comment.body;
