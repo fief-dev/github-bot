@@ -1,5 +1,6 @@
 import { Probot } from 'probot';
 import type { User } from "@octokit/webhooks-types";
+import { graphql as globalGraphql } from "@octokit/graphql";
 
 const getComment = (sender: User): string => {
   return `
@@ -15,10 +16,38 @@ Farewell!
 `.trim();
 };
 
+const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Promise<boolean> => {
+  const { data: { search: issueCount } } = await graphql({
+    query: `
+      query countDiscussions($countQuery: String!) {
+        search(query: $query, type: ISSUE) {
+          issueCount
+        }
+      }
+    `,
+    countQuery: `author:${user.login} repo:fief-dev/fief`
+  }) as any;
+
+  const { data: { search: discussionCount } }= await graphql({
+    query: `
+      query countDiscussions($countQuery: String!) {
+        search(query: $query, type: DISCUSSION) {
+          discussionCount
+        }
+      }
+    `,
+    countQuery: `author:${user.login} repo:fief-dev/fief`
+  }) as any;
+
+  return (issueCount + discussionCount) === 1;
+};
+
 export const firstTimeGreetingsHandler = (app: Probot): Probot => {
   app.on(["issues.opened"], async (context) => {
     if (context.isBot) return;
-    if (context.payload.issue.author_association !== 'FIRST_TIMER') return;
+
+    const user = context.payload.issue.user;
+    if (!await isFirstTimePoster(user, context.octokit.graphql)) return;
 
     const issueComment = context.issue({ body: getComment(context.payload.issue.user) });
     await context.octokit.issues.createComment(issueComment);
@@ -26,9 +55,12 @@ export const firstTimeGreetingsHandler = (app: Probot): Probot => {
 
   app.on(["discussion.created"], async (context) => {
     if (context.isBot) return;
-    if (context.payload.discussion.author_association !== 'FIRST_TIMER') return;
 
     const graphql = context.octokit.graphql;
+    const user = context.payload.discussion.user;
+
+    if (!await isFirstTimePoster(user, graphql)) return;
+
     await graphql({
       query: `
         mutation($discussionId: ID!, $body: String!) {
