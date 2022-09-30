@@ -17,7 +17,7 @@ Farewell!
 };
 
 const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Promise<boolean> => {
-  const { data: { search: issueCount } } = await graphql({
+  const { search: { issueCount } } = await graphql({
     query: `
       query countDiscussions($countQuery: String!) {
         search(query: $countQuery, type: ISSUE) {
@@ -28,7 +28,7 @@ const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Pro
     countQuery: `author:${user.login} repo:fief-dev/fief`
   }) as any;
 
-  const { data: { search: discussionCount } }= await graphql({
+  const { search: { discussionCount } } = await graphql({
     query: `
       query countDiscussions($countQuery: String!) {
         search(query: $countQuery, type: DISCUSSION) {
