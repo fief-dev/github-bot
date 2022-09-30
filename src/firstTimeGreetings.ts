@@ -20,7 +20,7 @@ const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Pro
   const { data: { search: issueCount } } = await graphql({
     query: `
       query countDiscussions($countQuery: String!) {
-        search(query: $query, type: ISSUE) {
+        search(query: $countQuery, type: ISSUE) {
           issueCount
         }
       }
@@ -30,8 +30,8 @@ const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Pro
 
   const { data: { search: discussionCount } }= await graphql({
     query: `
-      query countDiscussions($query: String!) {
-        search(query: $query, type: DISCUSSION) {
+      query countDiscussions($countQuery: String!) {
+        search(query: $countQuery, type: DISCUSSION) {
           discussionCount
         }
       }
