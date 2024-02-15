@@ -8,9 +8,24 @@ Hail, @${sender.login} 👋 Welcome to Fief's kingdom!
 
 Our team will get back to you very soon to help.
 
-In the meantime, take a minute to star our repository ⭐️
+In the meantime, take a minute to [star our repository](https://github.com/fief-dev/fief) ⭐️
 
-![star-fief](https://user-images.githubusercontent.com/1144727/192523552-dc2c31fa-ae94-42fa-9ab4-7d0ba51bb7b0.png)
+<p align="center">
+<img width="656" alt="star-fief" src="https://github.com/fief-dev/fief/assets/1144727/b2db7f59-102f-47e5-9751-67fa10372c52">
+</p>
+
+## Want to support us?
+
+Subscribe to one of our paid plan to help us continue our work and receive exclusive information and benefits! Starts at $5/month 🪙
+
+<p align="center">
+    <a href="https://polar.sh/fief-dev">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=fief-dev&darkmode=1">
+      <img alt="Subscribe" src="https://polar.sh/embed/subscribe.svg?org=fief-dev">
+    </picture>
+    </a>
+</p>
 
 Farewell!
 `.trim();
