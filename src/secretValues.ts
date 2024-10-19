@@ -37,6 +37,9 @@ Hail, @${sender.login} 👋
 I've noticed you shared secret values: ${sensitiveValues.map(({ name }) => `\`${name}\``).join(', ')}. Those are highly sensitive and you should keep them secret.
 
 For your security, I've taken the liberty to replace them with dummy values.
+
+> [!IMPORTANT]
+> Since GitHub shows comments history publicly, I recommend you to delete the old revision as described [here](https://docs.github.com/en/communities/moderating-comments-and-conversations/tracking-changes-in-a-comment#deleting-sensitive-information-from-a-comments-history).
 `.trim();
 };
 
