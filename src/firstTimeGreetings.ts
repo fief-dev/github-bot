@@ -1,4 +1,4 @@
-import { Probot } from 'probot';
+import { Probot } from "probot";
 import type { User } from "@octokit/webhooks-types";
 import { graphql as globalGraphql } from "@octokit/graphql";
 
@@ -14,25 +14,17 @@ In the meantime, take a minute to [star our repository](https://github.com/fief-
 <img width="656" alt="star-fief" src="https://github.com/fief-dev/fief/assets/1144727/b2db7f59-102f-47e5-9751-67fa10372c52">
 </p>
 
-## Want to support us?
-
-Subscribe to one of our paid plan to help us continue our work and receive exclusive information and benefits! Starts at $5/month 🪙
-
-<p align="center">
-    <a href="https://polar.sh/fief-dev">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=fief-dev&darkmode=1">
-      <img alt="Subscribe" src="https://polar.sh/embed/subscribe.svg?org=fief-dev">
-    </picture>
-    </a>
-</p>
-
 Farewell!
 `.trim();
 };
 
-const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Promise<boolean> => {
-  const { search: { issueCount } } = await graphql({
+const isFirstTimePoster = async (
+  user: User,
+  graphql: typeof globalGraphql,
+): Promise<boolean> => {
+  const {
+    search: { issueCount },
+  } = (await graphql({
     query: `
       query countDiscussions($countQuery: String!) {
         search(query: $countQuery, type: ISSUE) {
@@ -40,10 +32,12 @@ const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Pro
         }
       }
     `,
-    countQuery: `author:${user.login} repo:fief-dev/fief`
-  }) as any;
+    countQuery: `author:${user.login} repo:fief-dev/fief`,
+  })) as any;
 
-  const { search: { discussionCount } } = await graphql({
+  const {
+    search: { discussionCount },
+  } = (await graphql({
     query: `
       query countDiscussions($countQuery: String!) {
         search(query: $countQuery, type: DISCUSSION) {
@@ -51,10 +45,10 @@ const isFirstTimePoster = async (user: User, graphql: typeof globalGraphql): Pro
         }
       }
     `,
-    countQuery: `author:${user.login} repo:fief-dev/fief`
-  }) as any;
+    countQuery: `author:${user.login} repo:fief-dev/fief`,
+  })) as any;
 
-  return (issueCount + discussionCount) === 1;
+  return issueCount + discussionCount === 1;
 };
 
 export const firstTimeGreetingsHandler = (app: Probot): Probot => {
@@ -62,9 +56,11 @@ export const firstTimeGreetingsHandler = (app: Probot): Probot => {
     if (context.isBot) return;
 
     const user = context.payload.issue.user;
-    if (!await isFirstTimePoster(user, context.octokit.graphql)) return;
+    if (!(await isFirstTimePoster(user, context.octokit.graphql))) return;
 
-    const issueComment = context.issue({ body: getComment(context.payload.issue.user) });
+    const issueComment = context.issue({
+      body: getComment(context.payload.issue.user),
+    });
     await context.octokit.issues.createComment(issueComment);
   });
 
@@ -74,7 +70,7 @@ export const firstTimeGreetingsHandler = (app: Probot): Probot => {
     const graphql = context.octokit.graphql;
     const user = context.payload.discussion.user;
 
-    if (!await isFirstTimePoster(user, graphql)) return;
+    if (!(await isFirstTimePoster(user, graphql))) return;
 
     await graphql({
       query: `
